@@ -9,7 +9,7 @@ public class NewBehaviourScript : MonoBehaviour
     public float forceAmount = 10;
     public float jumpAmount = 10;
     private bool isJumping;
-
+    public float rotationSpeed;
 
     void Update()
     {
@@ -22,6 +22,12 @@ public class NewBehaviourScript : MonoBehaviour
         {
             rb.AddForce(Vector3.up * jumpAmount, ForceMode.Impulse);
             isJumping = true;
+        }
+
+        if (movement != Vector3.zero)
+        {
+            Quaternion toRotation = Quaternion.LookRotation(movement, Vector3.up);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
         }
     }
 
