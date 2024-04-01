@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ground
   - AI
+  - Limits
   layers:
   - Default
   - TransparentFX

@@ -9,12 +9,14 @@ public class NewBehaviourScript : MonoBehaviour
     public float forceAmount = 10;
     public float jumpAmount = 10;
     private bool isJumping;
-    public float rotationSpeed;
+    //public float rotationSpeed;
+    private float x;
+    private float z;
 
     void Update()
     {
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        x = Input.GetAxis("Horizontal");
+        z = Input.GetAxis("Vertical");
         Vector3 movement = new Vector3(x,0,z).normalized;
         movement = Vector3.ClampMagnitude(movement, 1);
         transform.Translate(movement*speed*Time.deltaTime);
@@ -24,11 +26,11 @@ public class NewBehaviourScript : MonoBehaviour
             isJumping = true;
         }
 
-        if (movement != Vector3.zero)
+        /*if (movement != Vector3.zero)
         {
             Quaternion toRotation = Quaternion.LookRotation(movement, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
-        }
+        }*/
     }
 
     void OnCollisionEnter(Collision other)
@@ -37,6 +39,12 @@ public class NewBehaviourScript : MonoBehaviour
         {
             isJumping = false;
         }
+
+        /*if (other.gameObject.CompareTag("Limits"))
+        {
+            this.transform.Translate(Vector3.right * -x);
+            this.transform.Translate(Vector3.forward * -z);
+        }*/
     }
 
 }
