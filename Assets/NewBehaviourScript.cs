@@ -9,9 +9,15 @@ public class NewBehaviourScript : MonoBehaviour
     public float forceAmount = 10;
     public float jumpAmount = 10;
     private bool isJumping;
-    //public float rotationSpeed;
+    public float rotationSpeed;
     private float x;
     private float z;
+    private Quaternion originalRotation;
+
+    void Start()
+    {
+        originalRotation = transform.rotation;
+    }
 
     void Update()
     {
@@ -26,11 +32,11 @@ public class NewBehaviourScript : MonoBehaviour
             isJumping = true;
         }
 
-        /*if (movement != Vector3.zero)
+        if (movement != Vector3.zero)
         {
             Quaternion toRotation = Quaternion.LookRotation(movement, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
-        }*/
+        }
     }
 
     void OnCollisionEnter(Collision other)
@@ -40,11 +46,27 @@ public class NewBehaviourScript : MonoBehaviour
             isJumping = false;
         }
 
-        /*if (other.gameObject.CompareTag("Limits"))
+        if (other.gameObject.CompareTag("Roots"))
         {
-            this.transform.Translate(Vector3.right * -x);
-            this.transform.Translate(Vector3.forward * -z);
-        }*/
+            rb.constraints = RigidbodyConstraints.None;  //Elimina los constraints.
+            //StartCoroutine(WaitSecs());  
+            transform.rotation = originalRotation;
+        }
     }
 
+    void OnCollisionStay(Collision other)
+    {
+        if (other.gameObject.CompareTag("Limits"))
+        {
+            this.transform.Translate(Vector3.right * -x * Time.deltaTime);
+            this.transform.Translate(Vector3.forward * -z * Time.deltaTime);
+        }
+    }
+
+
+/*    IEnumerator WaitSecs()
+    {
+        yield return new WaitForSecondsRealtime(3);
+    }
+*/
 }
