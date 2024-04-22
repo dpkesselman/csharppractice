@@ -12,12 +12,7 @@ public class NewBehaviourScript : MonoBehaviour
     public float rotationSpeed;
     private float x;
     private float z;
-    private Quaternion originalRotation;
-
-    void Start()
-    {
-        originalRotation = transform.rotation;
-    }
+    private bool isFallen = false;
 
     void Update()
     {
@@ -37,6 +32,12 @@ public class NewBehaviourScript : MonoBehaviour
             Quaternion toRotation = Quaternion.LookRotation(movement, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
         }
+
+        if (Input.GetKeyDown(KeyCode.G) && isFallen)
+        {
+            transform.rotation = Quaternion.identity;
+            rb.constraints = RigidbodyConstraints.FreezePositionX & RigidbodyConstraints.FreezeRotationX;
+        }
     }
 
     void OnCollisionEnter(Collision other)
@@ -48,9 +49,8 @@ public class NewBehaviourScript : MonoBehaviour
 
         if (other.gameObject.CompareTag("Roots"))
         {
-            rb.constraints = RigidbodyConstraints.None;  //Elimina los constraints.
-            //StartCoroutine(WaitSecs());  
-            transform.rotation = originalRotation;
+            rb.constraints = RigidbodyConstraints.None;
+            isFallen = true;
         }
     }
 
@@ -63,10 +63,4 @@ public class NewBehaviourScript : MonoBehaviour
         }
     }
 
-
-/*    IEnumerator WaitSecs()
-    {
-        yield return new WaitForSecondsRealtime(3);
-    }
-*/
 }
